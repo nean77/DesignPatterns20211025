@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PbLab.DesignPatterns.Services;
+using System;
 
 namespace PbLab.DesignPatterns.Model
 {
@@ -6,10 +7,11 @@ namespace PbLab.DesignPatterns.Model
 	{
 		public Sample()
 		{
-
+			Id = IdGenerator.Instance.Next(); 
 		}
 
 		public Sample(DateTimeOffset timeStamp, MassValue mass)
+			: this()
 		{
 			TimeStamp = timeStamp;
 			Mass = mass;
@@ -18,5 +20,7 @@ namespace PbLab.DesignPatterns.Model
 		public DateTimeOffset TimeStamp { get; set; }
 
 		public MassValue Mass { get; set; }
+
+		public int Id { get; }
 	}
 }
