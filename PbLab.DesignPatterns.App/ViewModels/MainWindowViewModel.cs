@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using PbLab.DesignPatterns.Model;
+using PbLab.DesignPatterns.Services;
 
 namespace PbLab.DesignPatterns.ViewModels
 {
@@ -14,9 +15,14 @@ namespace PbLab.DesignPatterns.ViewModels
 	{
         private readonly ObservableCollection<string> _selectedFiles = new ObservableCollection<string>();
 		private readonly ObservableCollection<Sample> _samples = new ObservableCollection<Sample>();
-		public MainWindowViewModel()
+
+		private readonly IReaderFactory _readerFactory;
+
+		public MainWindowViewModel(IReaderFactory readerFactory)
 		{
-            SelectedFiles = new ReadOnlyObservableCollection<string>(_selectedFiles);
+			_readerFactory = readerFactory;
+
+			SelectedFiles = new ReadOnlyObservableCollection<string>(_selectedFiles);
 			Samples = new ReadOnlyObservableCollection<Sample>(_samples);
 			OpenFileCmd = new RelayCommand(OnOpenFile, CanOpenFile);
 			RemoveFileCmd = new RelayCommand<string>(OnRemoveFile, CanRemoveFile);
@@ -30,21 +36,23 @@ namespace PbLab.DesignPatterns.ViewModels
 			_samples.Clear();
 			foreach (var file in _selectedFiles)
 			{
+				var reader = _readerFactory.Create(new FileInfo(file));
+
+				IEnumerable<Sample> samples;
+
 				using (StreamReader stream = File.OpenText(file))
 				{
-					JsonSerializer serializer = new JsonSerializer();
-					using (JsonReader r = new JsonTextReader(stream))
-					{
-						var samples = serializer.Deserialize<List<Sample>>(r);
-						samples.ForEach(s => _samples.Add(s));
-					}
+					samples = reader.Read(stream);
 				}
+
+				Append(samples);
 			}
 
 			_selectedFiles.Clear();
 		}
 
 		private bool CanRemoveFile(string arg) => true;
+
 		private bool CanOpenFile() => true;
 
 		private void OnRemoveFile(string file)
@@ -75,5 +83,13 @@ namespace PbLab.DesignPatterns.ViewModels
 		public RelayCommand<string> RemoveFileCmd { get; private set; }
 
 		public RelayCommand ReadFileCmd { get; private set; }
+
+		private void Append(IEnumerable<Sample> samples)
+		{
+			foreach (var item in samples)
+			{
+				_samples.Add(item);
+			}
+		}
 	}
 }

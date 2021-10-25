@@ -71,6 +71,8 @@
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
     <Compile Include="Services\CsvSamplesReader.cs" />
+    <Compile Include="Services\IReaderFactory.cs" />
+    <Compile Include="Services\ReaderFactory.cs" />
     <Compile Include="Services\XmlSamplesReader.cs" />
     <Compile Include="Services\ISamplesReader.cs" />
     <Compile Include="Services\JsonSamplesReader.cs" />
