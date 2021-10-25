@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GalaSoft.MvvmLight;
@@ -34,21 +36,43 @@ namespace PbLab.DesignPatterns.ViewModels
 		private void OnReadFiles()
 		{
 			_samples.Clear();
+
+			var reportTemplate = new ReportPrototype(DateTime.Now);
+
+			var reports = new List<string>();
+
 			foreach (var file in _selectedFiles)
 			{
+				var stats = new StatsBuilder(file);
+
 				var reader = _readerFactory.Create(new FileInfo(file));
 
 				IEnumerable<Sample> samples;
-
+				var stopper = new Stopwatch();
+				stopper.Start();
 				using (StreamReader stream = File.OpenText(file))
 				{
 					samples = reader.Read(stream);
 				}
 
+				stopper.Stop();
+
 				Append(samples);
+
+				stats.AddDuration(stopper.Elapsed);
+				stats.AddCount((uint)samples.Count());
+
+				reports.Add(reportTemplate.Clone(stats.Build()));
 			}
 
+			Store(reports);
+
 			_selectedFiles.Clear();
+		}
+
+		private void Store(List<string> reports)
+		{
+			throw new NotImplementedException();
 		}
 
 		private bool CanRemoveFile(string arg) => true;

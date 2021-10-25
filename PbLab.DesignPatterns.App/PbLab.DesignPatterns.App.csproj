@@ -72,13 +72,16 @@
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
     <Compile Include="Model\MassValueBuilder.cs" />
+    <Compile Include="Services\StatsBuilder.cs" />
     <Compile Include="Services\CsvSamplesReader.cs" />
     <Compile Include="Services\IdGenerator.cs" />
     <Compile Include="Services\IReaderFactory.cs" />
     <Compile Include="Services\ReaderFactory.cs" />
+    <Compile Include="Services\SamplesReadStatistics.cs" />
     <Compile Include="Services\XmlSamplesReader.cs" />
     <Compile Include="Services\ISamplesReader.cs" />
     <Compile Include="Services\JsonSamplesReader.cs" />
+    <Compile Include="Services\ReportPrototype.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
