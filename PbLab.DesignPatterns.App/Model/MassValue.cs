@@ -26,11 +26,13 @@ namespace PbLab.DesignPatterns.Model
 
 		public static MassValue Parse(string mass)
 		{
-			var parts = mass.Split((' '));
-			var value = decimal.Parse(parts[0]);
-			var unit = (MassUnit)Enum.Parse(typeof(MassUnit), parts[1]);
+			var parts = mass.Split(' ');
 
-			return new MassValue(value, unit);
+			var builder = new MassValueBuilder();
+			builder.AddUnit(parts[1]);
+			builder.AddValue(parts[0]);
+
+			return builder.Build();
 		}
 
 		public override string ToString()

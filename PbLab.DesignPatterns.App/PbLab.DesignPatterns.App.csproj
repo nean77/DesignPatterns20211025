@@ -67,9 +67,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\IMassValueBuilder.cs" />
     <Compile Include="Model\MassUnit.cs" />
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
+    <Compile Include="Model\MassValueBuilder.cs" />
     <Compile Include="Services\CsvSamplesReader.cs" />
     <Compile Include="Services\IdGenerator.cs" />
     <Compile Include="Services\IReaderFactory.cs" />
