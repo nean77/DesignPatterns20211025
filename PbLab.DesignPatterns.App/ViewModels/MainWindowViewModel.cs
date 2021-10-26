@@ -19,12 +19,8 @@ namespace PbLab.DesignPatterns.ViewModels
         private readonly ObservableCollection<string> _selectedFiles = new ObservableCollection<string>();
 		private readonly ObservableCollection<Sample> _samples = new ObservableCollection<Sample>();
 
-		private readonly ObjectsPool<ISamplesReader> _readersShelf;
-
-		public MainWindowViewModel(ObjectsPool<ISamplesReader> readersShelf)
+		public MainWindowViewModel()
 		{
-			_readersShelf = readersShelf;
-
 			SelectedFiles = new ReadOnlyObservableCollection<string>(_selectedFiles);
 			Samples = new ReadOnlyObservableCollection<Sample>(_samples);
 			OpenFileCmd = new RelayCommand(OnOpenFile, CanOpenFile);
@@ -38,44 +34,11 @@ namespace PbLab.DesignPatterns.ViewModels
 		{
 			_samples.Clear();
 
-			var reportTemplate = new ReportPrototype(DateTime.Now);
+			var samples = SourceReader.ReadAllSources(_selectedFiles);
 
-			var reports = new List<string>();
-
-			foreach (var file in _selectedFiles)
-			{
-				var stats = new StatsBuilder(file);
-
-				var reader = _readersShelf.Borrow(new FileInfo(file).Extension);
-
-				IEnumerable<Sample> samples;
-				var stopper = new Stopwatch();
-				stopper.Start();
-				using (StreamReader stream = FileProxy.OpenText(file))
-				{
-					samples = reader.Read(stream);
-				}
-
-				stopper.Stop();
-
-				_readersShelf.Release(reader);
-
-				Append(samples);
-
-				stats.AddDuration(stopper.Elapsed);
-				stats.AddCount((uint)samples.Count());
-
-				reports.Add(reportTemplate.Clone(stats.Build()));
-			}
-
-			Store(reports);
+			Append(samples);
 
 			_selectedFiles.Clear();
-		}
-
-		private void Store(List<string> reports)
-		{
-			throw new NotImplementedException();
 		}
 
 		private bool CanRemoveFile(string arg) => true;

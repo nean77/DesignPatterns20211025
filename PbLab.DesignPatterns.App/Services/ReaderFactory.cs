@@ -8,6 +8,7 @@ namespace PbLab.DesignPatterns.Services
 	{
 		public ISamplesReader Create(string type)
 		{
+			type = type.Trim('.');
 			return FactorizeFrom(type);
 		}
 
