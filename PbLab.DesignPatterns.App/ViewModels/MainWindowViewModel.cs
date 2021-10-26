@@ -51,7 +51,7 @@ namespace PbLab.DesignPatterns.ViewModels
 				IEnumerable<Sample> samples;
 				var stopper = new Stopwatch();
 				stopper.Start();
-				using (StreamReader stream = File.OpenText(file))
+				using (StreamReader stream = FileProxy.OpenText(file))
 				{
 					samples = reader.Read(stream);
 				}

@@ -85,6 +85,7 @@
     <Compile Include="Services\ISamplesReader.cs" />
     <Compile Include="Services\JsonSamplesReader.cs" />
     <Compile Include="Services\ReportPrototype.cs" />
+    <Compile Include="Tools\FileProxy.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
