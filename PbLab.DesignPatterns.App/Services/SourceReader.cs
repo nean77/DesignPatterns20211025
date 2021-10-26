@@ -1,4 +1,5 @@
-﻿using PbLab.DesignPatterns.Model;
+﻿using PbLab.DesignPatterns.Audit;
+using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Tools;
 using System;
 using System.Collections.Generic;
@@ -43,8 +44,19 @@ namespace PbLab.DesignPatterns.Services
 				reports.Add(reportTemplate.Clone(stats.Build()));
 			}
 
+
+			Store(reports);
 			return result;
         }
+
+		private static void Store(List<string> reports)
+		{
+			var file = "samplesRead.txt";
+
+			var logger = new LoggerFactory().Create(file);
+
+			reports.ForEach(report => logger.Log(report));
+		}
 
 		public static IEnumerable<Sample> ReadAllSamples(string file)
 		{

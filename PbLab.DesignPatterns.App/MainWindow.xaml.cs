@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using PbLab.DesignPatterns.Audit;
 using PbLab.DesignPatterns.Services;
 using PbLab.DesignPatterns.Tools;
 using PbLab.DesignPatterns.ViewModels;
@@ -13,7 +14,7 @@ namespace PbLab.DesignPatterns
 		public MainWindow()
 		{
 			InitializeComponent();
-			DataContext = new MainWindowViewModel();
+			DataContext = new MainWindowViewModel(new LoggerFactory());
 		}
 	}
 }
