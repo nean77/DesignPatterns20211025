@@ -81,6 +81,7 @@
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
     <Compile Include="Model\MassValueBuilder.cs" />
+    <Compile Include="Services\CombinedReader.cs" />
     <Compile Include="Tools\IFactory.cs" />
     <Compile Include="Tools\ObjectsPool.cs" />
     <Compile Include="Services\LocalFileReaderPool.cs" />

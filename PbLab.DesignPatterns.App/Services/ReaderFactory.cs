@@ -25,6 +25,7 @@ namespace PbLab.DesignPatterns.Services
 				case "csv": return new CsvSamplesReader();
 				case "json": return new JsonSamplesReader();
 				case "xml": return new XmlSamplesReader();
+				case "mix": return new CombinedReader(new ISamplesReader[] { new CsvSamplesReader() , new JsonSamplesReader(), new XmlSamplesReader() });
 				default: throw new NotImplementedException(); // Exception driven development or maybe sth else?
 			}
 		}
