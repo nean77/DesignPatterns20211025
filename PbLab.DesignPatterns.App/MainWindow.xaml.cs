@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using PbLab.DesignPatterns.Services;
+using PbLab.DesignPatterns.Tools;
 using PbLab.DesignPatterns.ViewModels;
 
 namespace PbLab.DesignPatterns
@@ -12,7 +13,7 @@ namespace PbLab.DesignPatterns
 		public MainWindow()
 		{
 			InitializeComponent();
-			DataContext = new MainWindowViewModel(new ReaderFactory());
+			DataContext = new MainWindowViewModel(new ObjectsPool<ISamplesReader>(new ReaderFactory()));
 		}
 	}
 }

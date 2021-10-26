@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PbLab.DesignPatterns.Tools;
+using System;
 using System.IO;
 
 namespace PbLab.DesignPatterns.Services
 {
-	public class ReaderFactory : IReaderFactory
+	public class ReaderFactory : IFactory<ISamplesReader>
 	{
 		public ISamplesReader Create(string type)
 		{

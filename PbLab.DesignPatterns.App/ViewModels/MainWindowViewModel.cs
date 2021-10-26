@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Services;
+using PbLab.DesignPatterns.Tools;
 
 namespace PbLab.DesignPatterns.ViewModels
 {
@@ -18,11 +19,11 @@ namespace PbLab.DesignPatterns.ViewModels
         private readonly ObservableCollection<string> _selectedFiles = new ObservableCollection<string>();
 		private readonly ObservableCollection<Sample> _samples = new ObservableCollection<Sample>();
 
-		private readonly IReaderFactory _readerFactory;
+		private readonly ObjectsPool<ISamplesReader> _readersShelf;
 
-		public MainWindowViewModel(IReaderFactory readerFactory)
+		public MainWindowViewModel(ObjectsPool<ISamplesReader> readersShelf)
 		{
-			_readerFactory = readerFactory;
+			_readersShelf = readersShelf;
 
 			SelectedFiles = new ReadOnlyObservableCollection<string>(_selectedFiles);
 			Samples = new ReadOnlyObservableCollection<Sample>(_samples);
@@ -45,7 +46,7 @@ namespace PbLab.DesignPatterns.ViewModels
 			{
 				var stats = new StatsBuilder(file);
 
-				var reader = _readerFactory.Create(new FileInfo(file));
+				var reader = _readersShelf.Borrow(new FileInfo(file).Extension);
 
 				IEnumerable<Sample> samples;
 				var stopper = new Stopwatch();
@@ -56,6 +57,8 @@ namespace PbLab.DesignPatterns.ViewModels
 				}
 
 				stopper.Stop();
+
+				_readersShelf.Release(reader);
 
 				Append(samples);
 
