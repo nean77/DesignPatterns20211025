@@ -96,6 +96,7 @@
     <Compile Include="Services\ReportPrototype.cs" />
     <Compile Include="Tools\FileProxy.cs" />
     <Compile Include="Services\SourceReader.cs" />
+    <Compile Include="Tools\DateTimeExtenstions.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

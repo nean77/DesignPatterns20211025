@@ -51,7 +51,7 @@ namespace PbLab.DesignPatterns.Services
 
 		private static void Store(List<string> reports)
 		{
-			var file = "samplesRead.txt";
+			var file = $"samplesRead.{DateTime.Now.AsFileName()}.txt";
 
 			var logger = new LoggerFactory().Create(file);
 

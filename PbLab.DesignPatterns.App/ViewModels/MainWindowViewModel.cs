@@ -30,7 +30,7 @@ namespace PbLab.DesignPatterns.ViewModels
 			RemoveFileCmd = new RelayCommand<string>(OnRemoveFile, CanRemoveFile);
 			ReadFileCmd = new RelayCommand(OnReadFiles, CanReadFiles);
 
-			var logName = "log.txt";
+			var logName = $"log.{DateTime.Now.AsFileName()}.txt";
 
 			_logger = loggerFactory.Create(logName, "time", "machineName");
 		}
