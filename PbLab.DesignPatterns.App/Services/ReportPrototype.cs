@@ -27,7 +27,7 @@ namespace PbLab.DesignPatterns.Services
 
         private string LoadTemplateFromResources()
         {
-            throw new NotImplementedException();
+            return "{timestamp} loaded {count} in {duration} from {location}";
         }
     }
 }
