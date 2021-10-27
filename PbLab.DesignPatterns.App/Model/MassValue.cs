@@ -28,9 +28,9 @@ namespace PbLab.DesignPatterns.Model
 			Unit = unit;
 		}
 
-		public decimal Value { get; private set; }
+		public decimal Value { get; set; }
 
-		public MassUnit Unit { get; private set; }
+		public MassUnit Unit { get; set; }
 
 		public static MassValue Parse(string mass)
 		{

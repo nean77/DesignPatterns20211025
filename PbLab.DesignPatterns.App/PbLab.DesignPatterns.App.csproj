@@ -82,6 +82,11 @@
     <Compile Include="Communication\IChanelFactory.cs" />
     <Compile Include="Communication\IChanel.cs" />
     <Compile Include="Communication\NullChanel.cs" />
+    <Compile Include="Execution\BulkParallerScheduler.cs" />
+    <Compile Include="Execution\ConcurrentScheduler.cs" />
+    <Compile Include="Execution\IScheduler.cs" />
+    <Compile Include="Execution\LinearScheduler.cs" />
+    <Compile Include="Execution\ParallerScheduler.cs" />
     <Compile Include="Model\IMassValueBuilder.cs" />
     <Compile Include="Model\MassUnit.cs" />
     <Compile Include="Model\MassValue.cs" />

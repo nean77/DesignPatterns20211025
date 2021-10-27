@@ -1,5 +1,6 @@
 ﻿using PbLab.DesignPatterns.Audit;
 using PbLab.DesignPatterns.Communication;
+using PbLab.DesignPatterns.Execution;
 using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Tools;
 using System;
@@ -21,35 +22,33 @@ namespace PbLab.DesignPatterns.Services
 			ChanelFactory = new ChanelFactory();
 		}
 
-        public static IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths)
+        public static IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths, IScheduler<string, Sample> scheduler)
         {
-			var result = new List<Sample>();
+			return scheduler.Schedule(paths, location => ProcessSource(location));
+        }
+
+		private static IEnumerable<Sample> ProcessSource(string location)
+		{
 			var reportTemplate = new ReportPrototype(DateTime.Now);
 
-			var reports = new List<string>();
+			var stats = new StatsBuilder(location);
 
-			foreach (var location in paths)
-			{
-				var stats = new StatsBuilder(location);
+			var stopper = new Stopwatch();
+			stopper.Start();
 
-				var stopper = new Stopwatch();
-				stopper.Start();
+			IEnumerable<Sample> samples = ReadAllSamples(location);
 
-				IEnumerable<Sample> samples = ReadAllSamples(location);
+			stopper.Stop();
 
-				stopper.Stop();
+			stats.AddDuration(stopper.Elapsed);
+			stats.AddCount((uint)samples.Count());
 
-				result.AddRange(samples);
+			var report = reportTemplate.Clone(stats.Build());
 
-				stats.AddDuration(stopper.Elapsed);
-				stats.AddCount((uint)samples.Count());
+			Store(new List<string> { report });
 
-				reports.Add(reportTemplate.Clone(stats.Build()));
-			}
-
-			Store(reports);
-			return result;
-        }
+			return samples;
+		}
 
 		private static void Store(List<string> reports)
 		{

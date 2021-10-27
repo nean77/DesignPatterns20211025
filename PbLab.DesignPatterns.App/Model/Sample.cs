@@ -17,9 +17,9 @@ namespace PbLab.DesignPatterns.Model
 			Mass = mass ?? MassValue.Zero;
 		}
 
-		public DateTimeOffset TimeStamp { get; protected set; }
+		public DateTimeOffset TimeStamp { get; set; }
 
-		public MassValue Mass { get; protected set; }
+		public MassValue Mass { get; set; }
 
 		public int Id { get; }
 	}
