@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using PbLab.DesignPatterns.Model;
 
 namespace PbLab.DesignPatterns.Services
@@ -11,7 +12,7 @@ namespace PbLab.DesignPatterns.Services
 
 		public CombinedReader(IEnumerable<ISamplesReader> knownReaders)
 		{
-			_knownReaders = knownReaders;
+			_knownReaders = knownReaders ?? Enumerable.Empty<ISamplesReader>();
 		}
 
 		public IEnumerable<Sample> Read(StreamReader stream)

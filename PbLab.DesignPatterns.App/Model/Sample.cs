@@ -14,12 +14,12 @@ namespace PbLab.DesignPatterns.Model
 			: this()
 		{
 			TimeStamp = timeStamp;
-			Mass = mass;
+			Mass = mass ?? MassValue.Zero;
 		}
 
-		public DateTimeOffset TimeStamp { get; set; }
+		public DateTimeOffset TimeStamp { get; protected set; }
 
-		public MassValue Mass { get; set; }
+		public MassValue Mass { get; protected set; }
 
 		public int Id { get; }
 	}

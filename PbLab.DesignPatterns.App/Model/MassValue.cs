@@ -4,6 +4,14 @@ namespace PbLab.DesignPatterns.Model
 {
 	public class MassValue	
 	{
+		private static MassValue _zero = new MassValue(0, MassUnit.Gram);
+
+		private static MassValue _none = new MassValue() { Value = -1, Unit = MassUnit.Gram };
+
+		public static MassValue Zero => _zero;
+
+		public static MassValue None => _none;
+
 		public MassValue()
 		{
 
@@ -20,9 +28,9 @@ namespace PbLab.DesignPatterns.Model
 			Unit = unit;
 		}
 
-		public decimal Value { get; set; }
+		public decimal Value { get; private set; }
 
-		public MassUnit Unit { get; set; }
+		public MassUnit Unit { get; private set; }
 
 		public static MassValue Parse(string mass)
 		{

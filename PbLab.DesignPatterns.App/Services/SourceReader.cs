@@ -23,7 +23,7 @@ namespace PbLab.DesignPatterns.Services
 
         public static IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths)
         {
-            var result = new List<Sample>();
+			var result = new List<Sample>();
 			var reportTemplate = new ReportPrototype(DateTime.Now);
 
 			var reports = new List<string>();
@@ -46,7 +46,6 @@ namespace PbLab.DesignPatterns.Services
 
 				reports.Add(reportTemplate.Clone(stats.Build()));
 			}
-
 
 			Store(reports);
 			return result;

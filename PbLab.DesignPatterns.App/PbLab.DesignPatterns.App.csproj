@@ -81,12 +81,14 @@
     <Compile Include="Communication\FileChanel.cs" />
     <Compile Include="Communication\IChanelFactory.cs" />
     <Compile Include="Communication\IChanel.cs" />
+    <Compile Include="Communication\NullChanel.cs" />
     <Compile Include="Model\IMassValueBuilder.cs" />
     <Compile Include="Model\MassUnit.cs" />
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
     <Compile Include="Model\MassValueBuilder.cs" />
     <Compile Include="Services\CombinedReader.cs" />
+    <Compile Include="Services\NullReader.cs" />
     <Compile Include="Tools\IFactory.cs" />
     <Compile Include="Tools\ObjectsPool.cs" />
     <Compile Include="Services\LocalFileReaderPool.cs" />

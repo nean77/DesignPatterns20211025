@@ -4,7 +4,9 @@
     {
         public IChanel Create(string protocol)
         {
-            IChanel result = null;
+            protocol = protocol ?? string.Empty; 
+
+            IChanel result = new NullChanel();
 
             switch (protocol)
             {
