@@ -67,6 +67,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audit\BroadcastingLogger.cs" />
     <Compile Include="Audit\FileLogger.cs" />
     <Compile Include="Audit\GenericDecorator.cs" />
     <Compile Include="Audit\MachineNameDecorator.cs" />
@@ -87,6 +88,10 @@
     <Compile Include="Execution\IScheduler.cs" />
     <Compile Include="Execution\LinearScheduler.cs" />
     <Compile Include="Execution\ParallerScheduler.cs" />
+    <Compile Include="FileSink.cs" />
+    <Compile Include="Messaging\IMessenger.cs" />
+    <Compile Include="Messaging\ISubscriber.cs" />
+    <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="Model\IMassValueBuilder.cs" />
     <Compile Include="Model\MassUnit.cs" />
     <Compile Include="Model\MassValue.cs" />

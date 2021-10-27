@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using PbLab.DesignPatterns.Audit;
 using PbLab.DesignPatterns.Communication;
 using PbLab.DesignPatterns.Execution;
+using PbLab.DesignPatterns.Messaging;
 using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Services;
 using PbLab.DesignPatterns.Tools;
 
 namespace PbLab.DesignPatterns.ViewModels
 {
-	public class MainWindowViewModel : ViewModelBase
+	public class MainWindowViewModel : ViewModelBase, ISubscriber
 	{
         private readonly ObservableCollection<string> _selectedFiles = new ObservableCollection<string>();
 		private readonly ObservableCollection<Sample> _samples = new ObservableCollection<Sample>();
 
 		private ILogger _logger;
 
-		public MainWindowViewModel(LoggerFactory loggerFactory)
+		public MainWindowViewModel(LoggerFactory loggerFactory, IMessenger messenger)
 		{
 			SelectedFiles = new ReadOnlyObservableCollection<string>(_selectedFiles);
 			Samples = new ReadOnlyObservableCollection<Sample>(_samples);
@@ -34,7 +32,9 @@ namespace PbLab.DesignPatterns.ViewModels
 
 			var logName = $"log.{DateTime.Now.AsFileName()}.txt";
 
-			_logger = loggerFactory.Create(logName, "time", "machineName");
+			_logger = new BroadcastingLogger(messenger);  // loggerFactory.Create(logName, "time", "machineName");
+
+			messenger.Subscribe(this);
 		}
 
 		private bool CanReadFiles() => _selectedFiles.Any();
@@ -97,6 +97,11 @@ namespace PbLab.DesignPatterns.ViewModels
 			{
 				_samples.Add(item);
 			}
+		}
+
+		public void Notify(string message)
+		{
+			/* present info to user on the UI */
 		}
 	}
 }
