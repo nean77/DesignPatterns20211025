@@ -92,6 +92,7 @@
     <Compile Include="Model\MassValue.cs" />
     <Compile Include="Model\Sample.cs" />
     <Compile Include="Model\MassValueBuilder.cs" />
+    <Compile Include="Services\AnotherSourceReader.cs" />
     <Compile Include="Services\CombinedReader.cs" />
     <Compile Include="Services\NullReader.cs" />
     <Compile Include="Tools\IFactory.cs" />

@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using PbLab.DesignPatterns.Audit;
+using PbLab.DesignPatterns.Communication;
 using PbLab.DesignPatterns.Execution;
 using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Services;
@@ -42,7 +43,9 @@ namespace PbLab.DesignPatterns.ViewModels
 		{
 			_samples.Clear();
 
-			var samples = SourceReader.ReadAllSources(_selectedFiles, new ParallerScheduler<string, Sample>());
+			var samples = SourceReader.Instance.ReadAllSources(_selectedFiles, new ParallerScheduler<string, Sample>());
+
+			samples = new OnlyFilesSourceReader(new ObjectsPool<ISamplesReader>(new ReaderFactory()), new ChanelFactory()).ReadAllSources(_selectedFiles, new ParallerScheduler<string, Sample>());
 
 			Append(samples);
 
@@ -71,7 +74,7 @@ namespace PbLab.DesignPatterns.ViewModels
 				return;
 			}
 
-			_selectedFiles.Add("file://"+dialog.FileName);
+			_selectedFiles.Add("file~"+dialog.FileName);
 
 			_logger.Log("source added");
 

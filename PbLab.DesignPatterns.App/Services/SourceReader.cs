@@ -11,23 +11,31 @@ using System.Linq;
 
 namespace PbLab.DesignPatterns.Services
 {
-    public class SourceReader
+	public class SourceReader
     {
-        private static ObjectsPool<ISamplesReader> Readers;
-		private static IChanelFactory ChanelFactory;
+		private IScheduler<string, Sample> _defaultScheduler = new LinearScheduler<string, Sample>();
+		private IChanelFactory _chanelFactory;
+		private ObjectsPool<ISamplesReader> _readers;
+		private static Lazy<SourceReader> _instance = new Lazy<SourceReader>(() => new SourceReader(new ObjectsPool<ISamplesReader>(new ReaderFactory()), new ChanelFactory(), new LinearScheduler<string, Sample>()));
 
-        static SourceReader()
+
+		protected SourceReader(ObjectsPool<ISamplesReader> readers, IChanelFactory chanelFactory, IScheduler<string, Sample> defaultScheduler = null)
 		{
-            Readers = new ObjectsPool<ISamplesReader>(new ReaderFactory());
-			ChanelFactory = new ChanelFactory();
+			_defaultScheduler = defaultScheduler ?? new LinearScheduler<string, Sample>();
+			_chanelFactory = chanelFactory;
+			_readers = readers;
 		}
 
-        public static IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths, IScheduler<string, Sample> scheduler)
+		public static SourceReader Instance => _instance.Value;
+
+        public IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths, IScheduler<string, Sample> scheduler = null)
         {
+			scheduler = scheduler ?? _defaultScheduler;
+
 			return scheduler.Schedule(paths, location => ProcessSource(location));
         }
 
-		private static IEnumerable<Sample> ProcessSource(string location)
+		private IEnumerable<Sample> ProcessSource(string location)
 		{
 			var reportTemplate = new ReportPrototype(DateTime.Now);
 
@@ -50,7 +58,7 @@ namespace PbLab.DesignPatterns.Services
 			return samples;
 		}
 
-		private static void Store(List<string> reports)
+		private void Store(List<string> reports)
 		{
 			var file = $"samplesRead.{DateTime.Now.AsFileName()}.txt";
 
@@ -59,14 +67,13 @@ namespace PbLab.DesignPatterns.Services
 			reports.ForEach(report => logger.Log(report));
 		}
 
-		public static IEnumerable<Sample> ReadAllSamples(string location)
+		public IEnumerable<Sample> ReadAllSamples(string location)
 		{
 			var schema = ExtractSchema(location);
-
-			var reader = Readers.Borrow(schema);
+			ISamplesReader reader = GetReader(schema);
 
 			var channelType = ExtractChannel(location);
-			var channel = ChanelFactory.Create(channelType);
+			var channel = _chanelFactory.Create(channelType);
 
 			IEnumerable<Sample> samples;
 			using (StreamReader stream = channel.Connect(location))
@@ -74,16 +81,26 @@ namespace PbLab.DesignPatterns.Services
 				samples = reader.Read(stream);
 			}
 
-			Readers.Release(reader);
+			ReturnReader(reader);			
 			return samples;
 		}
 
-		private static string ExtractSchema(string location)
+		protected virtual void ReturnReader(ISamplesReader reader)
+		{
+			_readers.Release(reader);
+		}
+
+		protected virtual ISamplesReader GetReader(string schema)
+		{
+			return _readers.Borrow(schema);
+		}
+
+		protected virtual string ExtractSchema(string location)
 		{
 			return location.Split('.').Last();
 		}
 
-		private static string ExtractChannel(string location)
+		protected virtual string ExtractChannel(string location)
 		{
 			return location.Split(':').First();
 		}
