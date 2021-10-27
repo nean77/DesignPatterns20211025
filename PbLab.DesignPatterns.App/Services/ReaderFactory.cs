@@ -1,26 +1,18 @@
 ﻿using PbLab.DesignPatterns.Tools;
 using System;
-using System.IO;
 
 namespace PbLab.DesignPatterns.Services
 {
 	public class ReaderFactory : IFactory<ISamplesReader>
 	{
-		public ISamplesReader Create(string type)
+		public ISamplesReader Create(string schema)
 		{
-			type = type.Trim('.');
-			return FactorizeFrom(type);
+			return FactorizeFrom(schema);
 		}
 
-		public ISamplesReader Create(FileInfo file)
+		private static ISamplesReader FactorizeFrom(string schema)
 		{
-			var type = file.Extension.Trim('.');
-			return FactorizeFrom(type);
-		}
-
-		private static ISamplesReader FactorizeFrom(string type)
-		{
-			switch (type)
+			switch (schema)
 			{
 				case "csv": return new CsvSamplesReader();
 				case "json": return new JsonSamplesReader();

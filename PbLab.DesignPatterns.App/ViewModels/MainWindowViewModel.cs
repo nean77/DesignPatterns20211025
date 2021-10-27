@@ -70,7 +70,7 @@ namespace PbLab.DesignPatterns.ViewModels
 				return;
 			}
 
-			_selectedFiles.Add(dialog.FileName);
+			_selectedFiles.Add("file://"+dialog.FileName);
 
 			_logger.Log("source added");
 
@@ -93,11 +93,6 @@ namespace PbLab.DesignPatterns.ViewModels
 			{
 				_samples.Add(item);
 			}
-		}
-
-		private ILogger x()
-		{
-			return new TimeStampDecorator(new GenericDecorator(new GenericDecorator(new FileLogger(""), () => DateTime.Now.ToString()), () => Environment.MachineName));
 		}
 	}
 }

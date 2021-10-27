@@ -1,4 +1,5 @@
 ﻿using PbLab.DesignPatterns.Audit;
+using PbLab.DesignPatterns.Communication;
 using PbLab.DesignPatterns.Model;
 using PbLab.DesignPatterns.Tools;
 using System;
@@ -12,10 +13,12 @@ namespace PbLab.DesignPatterns.Services
     public class SourceReader
     {
         private static ObjectsPool<ISamplesReader> Readers;
+		private static IChanelFactory ChanelFactory;
 
         static SourceReader()
 		{
             Readers = new ObjectsPool<ISamplesReader>(new ReaderFactory());
+			ChanelFactory = new ChanelFactory();
 		}
 
         public static IEnumerable<Sample> ReadAllSources(IEnumerable<string> paths)
@@ -25,14 +28,14 @@ namespace PbLab.DesignPatterns.Services
 
 			var reports = new List<string>();
 
-			foreach (var file in paths)
+			foreach (var location in paths)
 			{
-				var stats = new StatsBuilder(file);
+				var stats = new StatsBuilder(location);
 
 				var stopper = new Stopwatch();
 				stopper.Start();
 
-				IEnumerable<Sample> samples = ReadAllSamples(file);
+				IEnumerable<Sample> samples = ReadAllSamples(location);
 
 				stopper.Stop();
 
@@ -58,18 +61,33 @@ namespace PbLab.DesignPatterns.Services
 			reports.ForEach(report => logger.Log(report));
 		}
 
-		public static IEnumerable<Sample> ReadAllSamples(string file)
+		public static IEnumerable<Sample> ReadAllSamples(string location)
 		{
-			var reader = Readers.Borrow(new FileInfo(file).Extension);
+			var schema = ExtractSchema(location);
+
+			var reader = Readers.Borrow(schema);
+
+			var channelType = ExtractChannel(location);
+			var channel = ChanelFactory.Create(channelType);
 
 			IEnumerable<Sample> samples;
-			using (StreamReader stream = FileProxy.OpenText(file))
+			using (StreamReader stream = channel.Connect(location))
 			{
 				samples = reader.Read(stream);
 			}
 
 			Readers.Release(reader);
 			return samples;
+		}
+
+		private static string ExtractSchema(string location)
+		{
+			return location.Split('.').Last();
+		}
+
+		private static string ExtractChannel(string location)
+		{
+			return location.Split(':').First();
 		}
 	}
 }

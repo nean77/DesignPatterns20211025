@@ -76,6 +76,11 @@
     <Compile Include="Audit\ThreadDecorator.cs" />
     <Compile Include="Audit\ILogger.cs" />
     <Compile Include="Audit\AppDomainDecorator.cs" />
+    <Compile Include="Communication\ChanelFactory.cs" />
+    <Compile Include="Communication\HttpChanel.cs" />
+    <Compile Include="Communication\FileChanel.cs" />
+    <Compile Include="Communication\IChanelFactory.cs" />
+    <Compile Include="Communication\IChanel.cs" />
     <Compile Include="Model\IMassValueBuilder.cs" />
     <Compile Include="Model\MassUnit.cs" />
     <Compile Include="Model\MassValue.cs" />

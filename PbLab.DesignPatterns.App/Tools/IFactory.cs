@@ -9,7 +9,5 @@ namespace PbLab.DesignPatterns.Tools
 	public interface IFactory<TType>
 	{
 		TType Create(string type);
-
-		TType Create(FileInfo type);
 	}
 }
