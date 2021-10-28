@@ -117,6 +117,13 @@
     <Compile Include="Tools\FileProxy.cs" />
     <Compile Include="Services\SourceReader.cs" />
     <Compile Include="Tools\DateTimeExtenstions.cs" />
+    <Compile Include="Validation\IsNumber.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\Lenght.cs" />
+    <Compile Include="Validation\NotEmpty.cs" />
+    <Compile Include="Validation\Positive.cs" />
+    <Compile Include="Validation\Terminator.cs" />
+    <Compile Include="Validation\Validator.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

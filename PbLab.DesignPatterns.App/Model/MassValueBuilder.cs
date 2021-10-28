@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PbLab.DesignPatterns.Validation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,19 @@ namespace PbLab.DesignPatterns.Model
     {
         private decimal _value;
         private MassUnit _unit;
+		private NotEmpty _valueValidator;
+
+		public MassValueBuilder()
+		{
+            _valueValidator = new NotEmpty(new IsNumber(new Positive(new Lenght(2))));
+		}
+
 
         public void AddValue(string value)
         {
-            if (value.Trim().StartsWith("-"))
+            var isValid = _valueValidator.Validate(value);
+
+            if (!isValid)
             {
                 throw new ArgumentOutOfRangeException("mass must be positive");
             }
