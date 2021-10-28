@@ -68,8 +68,11 @@ namespace PbLab.DesignPatterns.Collections
 
 		public IEnumerator<Item> GetEnumerator()
 		{
-			var flat = _memory.SelectMany(group => group.Value).ToArray();
+			var flat = _memory.SelectMany(group => group.Value).OrderBy(item => item.ExpDate).ToList();
 
+			return flat.GetEnumerator();
+
+			// or custom enumerator
 			return new GenericEnumerator<Item>(flat);
 		}
 
