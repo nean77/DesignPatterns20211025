@@ -1,9 +1,10 @@
 ﻿using PbLab.DesignPatterns.Services;
+using PbLab.DesignPatterns.Statistics;
 using System;
 
 namespace PbLab.DesignPatterns.Model
 {
-	public class Sample
+	public class Sample : IStatisticElement
 	{
 		public Sample()
 		{
@@ -22,5 +23,11 @@ namespace PbLab.DesignPatterns.Model
 		public MassValue Mass { get; set; }
 
 		public int Id { get; }
+
+		public void Accept(IStatisticsCreator creator)
+		{
+			// show itself to visitor
+			creator.Analyze(this);
+		}
 	}
 }

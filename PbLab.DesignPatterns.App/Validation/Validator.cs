@@ -6,7 +6,7 @@
 
 		protected Validator(IValidator<T> next = null)
 		{
-			_next = next ?? new Terminator<T>();
+			_next = next ?? new Terminator<T>(); 
 		}
 
 		public bool Validate(T item)

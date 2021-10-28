@@ -101,6 +101,10 @@
     <Compile Include="Services\AnotherSourceReader.cs" />
     <Compile Include="Services\CombinedReader.cs" />
     <Compile Include="Services\NullReader.cs" />
+    <Compile Include="Statistics\AmountsStatistics.cs" />
+    <Compile Include="Statistics\IStatisticElement.cs" />
+    <Compile Include="Statistics\IStatisticsCreator.cs" />
+    <Compile Include="Statistics\TotalWeight.cs" />
     <Compile Include="Tools\IFactory.cs" />
     <Compile Include="Tools\ObjectsPool.cs" />
     <Compile Include="Services\LocalFileReaderPool.cs" />
